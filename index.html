@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+		<title>Player Comparer</title>
+	</head>
+	<body>
+		<div ng-app="mainApp" ng-controller="mainAppCtrl">
+			<form novalidate>
+				Summoner Name:<input type="text" ng-model="playerName">
+				<br>
+				<button ng-click="findPlayer()">Find Player</button>
+			</form>
+			<p ng-bind="playerJSON"></p>
+			<br>
+			<p ng-bind="playerDataJSON"><p>
+			<br>
+		</div>
+		<script>
+		var app = angular.module('mainApp',[]);
+		app.controller('mainAppCtrl', function($scope){
+			$scope.master = { playerName : 'Jeremi', playerJSON : '', playerDataJSON : '' };
+			$scope.initPlayer = function(){
+				$scope.playerName = $scope.master['playerName'];
+			}
+			$scope.getPlayerData = function(){
+				var oReq = new XMLHttpRequest();
+				oReq.addEventListener("load", function(){
+					$scope.master['playerDataJSON'] = JSON.parse(this.response);
+					console.log('Query complete.');
+				});
+				oReq.open("GET", "https://na.api.pvp.net/api/lol/na/v2.2/matchlist/by-summoner/" + $scope.master['playerJSON']['dafrasianest']['id'] + "?api_key=9ec38048-8f55-418a-b5d5-0adf99d032d2");
+				oReq.send();
+			};
+			$scope.findPlayer = function(){
+				var oReq = new XMLHttpRequest();
+				oReq.addEventListener("load",function(){
+					$scope.master['playerJSON'] = JSON.parse(this.responseText);
+					$scope.getPlayerData();
+				});
+				oReq.open("GET", "https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/dafrasianest?api_key=9ec38048-8f55-418a-b5d5-0adf99d032d2");
+				oReq.send();
+			};			
+			$scope.initPlayer();
+		});
+		</script>
+	</body>
+</html>
