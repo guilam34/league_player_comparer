@@ -1,4 +1,4 @@
-function matchlist(matchlistJSON){	
+function matchlist(matchlistJSON, callback){	
 	this.matches = [];
 	this.roleTracker = new Array();
 	this.roleTracker.push({name: 'TOP', val: 0});
@@ -74,6 +74,7 @@ function matchlist(matchlistJSON){
 	};	
 	this.init();	
 	this.favChampions();
+	callback();
 }
 
 function match(matchJSON){	

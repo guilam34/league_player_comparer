@@ -12,6 +12,7 @@
 				<br>
 				Region: <input type="text" ng-model="searchRegion">
 				<button ng-click="findPlayer()">Find Player</button>
+				<button ng-show="playerInitStatus()" ng-click="findPlayerStats()">Get Player Stats</button>
 			</form>
 			<!-- <img ng-src = "{{ championSplash }}"> -->
 			<p>Id: <span ng-bind="playerId"></span><p>
@@ -26,25 +27,30 @@
 		var playerMatchlist;
 
 		var app = angular.module('mainApp',[]);
-		app.controller('mainAppCtrl', function($scope){						
+		app.controller('mainAppCtrl', function($scope){	
+			$scope.initialized = '';
+			$scope.playerId = '';
 			$scope.getPlayerData = function(){
 				var oReq = new XMLHttpRequest();
 				var playerMatchlistEndpoint = "https://na.api.pvp.net/api/lol/"+ $scope.searchRegion + "/v2.2/matchlist/by-summoner/" + $scope.playerId + "?api_key=9ec38048-8f55-418a-b5d5-0adf99d032d2";
 				oReq.addEventListener("load", function(){
 					playerMatchlistJSON = JSON.parse(this.response);
-					playerMatchlist = new matchlist(playerMatchlistJSON);
-					//TODO fix asynchronous initialization problem
-					console.log(playerMatchlist.favChampions[0].splashURL);
+					playerMatchlist = new matchlist(playerMatchlistJSON, function(){
+						$scope.initialized = true;	
+					});								
 				});
 				oReq.open("GET", playerMatchlistEndpoint);
 				oReq.send();
 			};
+
+			//TODO fix ng-bind needing two clicks
 
 			$scope.bindPlayerData = function(){
 				$scope.playerId = playerJSON['id'];
 				$scope.playerName = playerJSON['name'];
 				$scope.playerLevel = playerJSON['summonerLevel'];
 				$scope.playerProfileIconId = playerJSON['profileIconId'];
+				console.log("hello");
 			};
 
 			$scope.findPlayer = function(){
@@ -57,7 +63,15 @@
 				});				
 				oReq.open("GET", playerEndpoint);
 				oReq.send();
-			};						
+			};	
+
+			$scope.findPlayerStats = function(){
+				console.log(playerMatchlist.favChampions());
+			};	
+
+			$scope.playerInitStatus = function(){
+				return $scope.initialized;
+			};			
 		});
 		</script>
 		<script type="text/javascript" src="matchlist.js"></script>

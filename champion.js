@@ -5,12 +5,8 @@ function champion(id){
 	this.title;
 	this.tags = new Array();	
 
-	this.initCallback = function(championJSON){
-				
-	};
-
 	this.init = function(){
-		//We need to create an instance variable to be able to reference the champion object from within the XMLHttpRequest object
+		//We need to create an instance variable to be able to reference the champion object from within the HTTP request callback which interprets this as the HTTP request object
 		var instance = this;
 		var oReq = new XMLHttpRequest();
 		var championEndpoint = "https://global.api.pvp.net/api/lol/static-data/na/v1.2/champion/" + this.id +  "?champData=tags&api_key=9ec38048-8f55-418a-b5d5-0adf99d032d2";		
