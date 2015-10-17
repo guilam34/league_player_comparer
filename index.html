@@ -25,7 +25,6 @@
 		var playerJSON;
 		var playerMatchlistJSON;
 		var playerMatchlist;
-
 		var app = angular.module('mainApp',[]);
 		app.controller('mainAppCtrl', function($scope){	
 			$scope.initialized = '';
@@ -70,13 +69,10 @@
 			$scope.findPlayerStats = function(){
 				var favChampions = playerMatchlist.favChampions();				
 				var championCount = new Array();
-				for(var x = 0; x < favChampions.length; x++){
-					var k = favChampions[x];
-					console.log(k);
-					console.log(k.name);
+				for(var x = 0; x < favChampions.length; x++){					
 					championCount.push({ name : favChampions[x].name, games : favChampions[x].numGames});
-				}
-				// console.log(championCount);
+				}			
+				console.log(championCount);	
 			};	
 
 			$scope.playerInitStatus = function(){

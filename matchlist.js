@@ -54,13 +54,12 @@ function matchlist(matchlistJSON, callback){
 		if(typeof(numChampions) == 'undefined'){
 			numChampions = 10;
 		}
-		var counter = 0;
 		var currentChampion;
 		var favoriteChampions = new Array();
 		for(var x = 0; x < numChampions; x++){
-			currentChampion = new champion(this.championTracker[x]);
+			currentChampion = new champion(this.championTracker[x]);			
 			currentChampion.init();
-			// favoriteChampions.push(currentChampion);
+			favoriteChampions.push(currentChampion);
 		}		
 		return favoriteChampions;
 	};	
@@ -77,7 +76,6 @@ function matchlist(matchlistJSON, callback){
 		}
 	};	
 	this.init();	
-	this.favChampions();
 	callback();
 }
 
