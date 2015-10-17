@@ -9,6 +9,7 @@ function matchlist(matchlistJSON, callback){
 	this.championTracker = new Array();
 	this.numberOfMatches = matchlistJSON['totalGames'];
 
+	var instance = this;
 	this.init = function(){
 		for(var key in matchlistJSON['matches']){		
 			this.matches.push(new match(matchlistJSON['matches'][key]));
@@ -50,18 +51,19 @@ function matchlist(matchlistJSON, callback){
 		});
 	};
 	
-	this.favChampions = function(numChampions){
+	this.favChampions = function(numChampions, callback){
 		if(typeof(numChampions) == 'undefined'){
 			numChampions = 10;
 		}
 		var currentChampion;
 		var favoriteChampions = new Array();
-		for(var x = 0; x < numChampions; x++){
-			currentChampion = new champion(this.championTracker[x]);			
-			currentChampion.init();
-			favoriteChampions.push(currentChampion);
-		}		
-		return favoriteChampions;
+		$.getJSON("./JSON/info.json", function(json){
+			for(var x = 0; x < numChampions; x++){
+				currentChampion = new champion(instance.championTracker[x],json);			
+				favoriteChampions.push(currentChampion);
+			}				
+			callback(favoriteChampions);
+		});				
 	};	
 
 	this.bestWinChampions = function(minGames){

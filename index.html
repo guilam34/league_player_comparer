@@ -67,14 +67,15 @@
 			};	
 
 			$scope.findPlayerStats = function(){
-				var favChampions = playerMatchlist.favChampions();				
-				var championCount = new Array();
-				for(var x = 0; x < favChampions.length; x++){					
-					championCount.push({ name : favChampions[x].name, games : favChampions[x].numGames});
-				}			
-				console.log(championCount);	
+				playerMatchlist.favChampions(undefined, function(favChampions){
+					var championCount = new Array();
+					for(var x = 0; x < favChampions.length; x++){
+						championCount.push({ name : favChampions[x].name, games : favChampions[x].numGames});
+					}			
+					return championCount
+				});						
 			};	
-
+			
 			$scope.playerInitStatus = function(){
 				return $scope.initialized;
 			};			
