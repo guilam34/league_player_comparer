@@ -1,6 +1,7 @@
-function champion(id){
-	this.id = id;
+function champion(championEntry){
+	this.id = championEntry.championId;
 	this.name;
+	this.numGames = championEntry.val;
 	this.splashURL;
 	this.title;
 	this.tags = new Array();	
@@ -18,11 +19,9 @@ function champion(id){
 			instance.title = championJSON['title'];			
 			for(var x = 0; x < championJSON['tags'].length; x++){
 				instance.tags.push(championJSON['tags'][x]);
-			}
+			}						
 		});
 		oReq.open("GET", championEndpoint);
 		oReq.send();
 	};
-	
-	this.init();
 }

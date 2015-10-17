@@ -54,10 +54,14 @@ function matchlist(matchlistJSON, callback){
 		if(typeof(numChampions) == 'undefined'){
 			numChampions = 10;
 		}
+		var counter = 0;
+		var currentChampion;
 		var favoriteChampions = new Array();
 		for(var x = 0; x < numChampions; x++){
-			favoriteChampions.push(new champion(this.championTracker[x].championId));
-		}
+			currentChampion = new champion(this.championTracker[x]);
+			currentChampion.init();
+			// favoriteChampions.push(currentChampion);
+		}		
 		return favoriteChampions;
 	};	
 
