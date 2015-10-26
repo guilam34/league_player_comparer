@@ -11,10 +11,12 @@ function matchlist(matchlistJSON, callback){
 
 	var instance = this;
 	this.init = function(){
-		for(var key in matchlistJSON['matches']){		
-			this.matches.push(new match(matchlistJSON['matches'][key]));
-			var lastMatch = this.matches[this.matches.length-1];
-			switch(lastMatch.lane){
+		for(var key in matchlistJSON['matches']){						
+			this.matches.push(new match(matchlistJSON['matches'][key]));			
+		}	
+		for(var key in this.matches){
+			var found = false;			
+			switch(this.matches[key].lane){
 				case "TOP":
 					this.roleTracker[0].val++;
 					break;			
@@ -32,15 +34,15 @@ function matchlist(matchlistJSON, callback){
 					break;
 				default:
 			}
-			if(!(lastMatch.championId in this.championTracker)){
-				this.championTracker.push({championId: lastMatch.championId, val: 1});
-			}else{
-				for(var key in this.championTracker){
-					if(this.championTracker[key].championId == lastMatch.championId){
-						this.championTracker[key].val++;
-						break;
-					}
+			for(var entry in this.championTracker){
+				if(this.championTracker[entry].championId == this.matches[key].championId){
+					this.championTracker[entry].val++;
+					found = true;
+					break;
 				}
+			}
+			if(!found){
+				this.championTracker.push({championId: this.matches[key].championId, val: 1});
 			}
 		}
 		this.championTracker.sort(function(a,b){
@@ -48,7 +50,7 @@ function matchlist(matchlistJSON, callback){
 		});
 		this.roleTracker.sort(function(a,b){
 			return b.val-a.val;
-		});
+		});		
 	};
 	
 	this.favChampions = function(numChampions, callback){
