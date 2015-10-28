@@ -7,7 +7,7 @@ function matchlist(matchlistJSON, callback){
 	this.roleTracker.push({name: 'CARRY', val: 0});
 	this.roleTracker.push({name: 'SUPPORT', val: 0});	
 	this.championTracker = new Array();
-	this.numberOfMatches = matchlistJSON['totalGames'];
+	this.numGames = matchlistJSON['totalGames'];
 
 	var instance = this;
 	this.init = function(){
@@ -54,19 +54,35 @@ function matchlist(matchlistJSON, callback){
 	};
 	
 	this.favChampions = function(numChampions, callback){
+		var curChampion;
+		var favChampions = new Array();
+
 		if(typeof(numChampions) == 'undefined'){
 			numChampions = 10;
 		}
-		var currentChampion;
-		var favoriteChampions = new Array();
+
 		$.getJSON("./JSON/info.json", function(json){
 			for(var x = 0; x < numChampions; x++){
-				currentChampion = new champion(instance.championTracker[x],json);			
-				favoriteChampions.push(currentChampion);
+				curChampion = new champion(instance.championTracker[x],json);			
+				favChampions.push(curChampion);
 			}				
-			callback(favoriteChampions);
+			callback(favChampions);
 		});				
 	};	
+
+	this.favRoles = function(callback){
+		var favRoles = new Array();
+
+		for(var x = 0; x < this.roleTracker.length; x++){
+			favRoles.push({
+				name: this.roleTracker[x].name,
+				val: this.roleTracker[x].val,
+				pct: (this.roleTracker[x].val * 1.0) / this.numGames
+			});
+		}
+
+		callback(favRoles);
+	};
 
 	this.bestWinChampions = function(minGames){
 		if(typeof(minGames) == 'undefined'){

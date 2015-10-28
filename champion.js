@@ -18,5 +18,6 @@ function champion(championEntry, json){
 			}				
 		}						
 	};	
+	
 	this.init(championEntry,json);
 }
