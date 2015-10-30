@@ -1,4 +1,4 @@
-function matchlist(matchlistJSON, callback){	
+function matchlist(matchlistJSON){	
 	this.matches = [];
 	this.roleTracker = new Array();
 	this.roleTracker.push({name: 'TOP', val: 0});
@@ -50,7 +50,7 @@ function matchlist(matchlistJSON, callback){
 		});
 		this.roleTracker.sort(function(a,b){
 			return b.val-a.val;
-		});		
+		});				
 	};
 	
 	this.favChampions = function(numChampions, callback){
@@ -74,8 +74,14 @@ function matchlist(matchlistJSON, callback){
 		var favRoles = new Array();
 
 		for(var x = 0; x < this.roleTracker.length; x++){
+			var formatted_name = this.roleTracker[x].name.toLowerCase();
+			formatted_name = formatted_name.charAt(0).toUpperCase() + formatted_name.slice(1);
+			if(formatted_name == 'Carry'){
+				formatted_name = 'AD ' + formatted_name;
+			}
+			
 			favRoles.push({
-				name: this.roleTracker[x].name,
+				name: formatted_name,
 				val: this.roleTracker[x].val,
 				pct: (this.roleTracker[x].val * 1.0) / this.numGames
 			});
@@ -96,7 +102,6 @@ function matchlist(matchlistJSON, callback){
 		}
 	};	
 	this.init();	
-	callback();
 }
 
 function match(matchJSON){	

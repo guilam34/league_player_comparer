@@ -3,6 +3,30 @@ html, body {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
+	color: rgb(63, 63, 63);
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+button {
+	background-color: rgb(63, 63, 63);
+	border: none;
+	border-radius: 5px 2.5px;
+	color: white;
+	font-weight: bold;
+	letter-spacing: 0.5px;
+	margin: 10px 0px;
+	padding: 5px 10px;
+}
+
+input {
+	margin: 10px 10px;
+	border: 0;
+	outline: 0;
+	border-bottom: 2px solid rgb(63, 63, 63);
+}
+
+#mainContainer {
+	margin-bottom: 50px;
 }
 
 #body-wrapper {
@@ -20,7 +44,44 @@ html, body {
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#4c4c4c', endColorstr='#1c1c1c', GradientType=1 );*/
 }
 
+.svg-wrapper {
+	height: 500px;
+	width: 800px;
+	margin: 0 auto;
+}
+
 .axis line{
     fill: none;
-    stroke: #71637D;
+    stroke: rgb(63, 63, 63);
+}
+
+.d3-tip {
+  line-height: 1;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 13px;
+  padding: 12px;
+  background: rgba(63, 63, 63, 0.8);
+  color: #fff;
+  border-radius: 5px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;  
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(63, 63, 63, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
 }

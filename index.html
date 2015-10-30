@@ -3,7 +3,7 @@
 	<head>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>		
 		<link rel="stylesheet" type="text/css" href="graphs.css">
 		<title>Player Comparer</title>
 	</head>
@@ -12,13 +12,11 @@
 			<div class="wrapper">
 				<div ng-app="mainApp" ng-controller="mainAppCtrl" id="mainContainer">
 					<form novalidate>
-						Summoner Name: <input type="text" ng-model="searchName">
+						<input type="text" ng-model="searchName" placeholder="Summoner Name">
+						<input type="text" ng-model="searchRegion" placeholder="Region">
 						<br>
-						Region: <input type="text" ng-model="searchRegion">
 						<button ng-click="findPlayer()">Find Player</button>
-					</form>								
-					<br>
-					<button ng-show="playerInitStatus()" ng-click="generateGraphs()">Draw Graphs</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -28,8 +26,7 @@
 		var playerMatchlist;
 
 		var app = angular.module('mainApp',[]);
-		app.controller('mainAppCtrl', function($scope){	
-			$scope.initialized = '';			
+		app.controller('mainAppCtrl', function($scope){				
 
 			$scope.getPlayerData = function(){
 				var oReq = new XMLHttpRequest();
@@ -37,56 +34,54 @@
 
 				oReq.addEventListener("load", function(){
 					playerMatchlistJSON = JSON.parse(this.response);
-					playerMatchlist = new matchlist(playerMatchlistJSON, function(){
-						$scope.initialized = true;							
-						$scope.$digest();
-						$('#mainContainer').fadeIn();
-					});								
+					playerMatchlist = new matchlist(playerMatchlistJSON);	
+					$scope.generateGraphs();							
 				});
 
 				oReq.open("GET", playerMatchlistEndpoint);
 				oReq.send();
 			};			
 
-			$scope.findPlayer = function(){
-				$('#mainContainer').fadeOut(function(){
+			$scope.findPlayer = function(){								
 					var oReq = new XMLHttpRequest();
 					var playerEndpoint = "https://na.api.pvp.net/api/lol/" + $scope.searchRegion + "/v1.4/summoner/by-name/" + $scope.searchName + "?api_key=9ec38048-8f55-418a-b5d5-0adf99d032d2";
 
 					oReq.addEventListener("load",function(){
 						playerJSON = JSON.parse(this.response)[$scope.searchName];
 						$scope.playerId = playerJSON['id'];
-						$scope.getPlayerData();
+						$scope.getPlayerData();		
 					});				
 
 					oReq.open("GET", playerEndpoint);
-					oReq.send();
-				});				
+					oReq.send();				
 			};	
 
-			$scope.generateGraphs = function(){
-				playerMatchlist.favChampions(undefined, function(favChampions){
-					var champGamesList = new Array();
+			$scope.generateGraphs = function(){		
+				$('#body-wrapper').fadeOut(500, function(){
+					d3.selectAll("svg").remove();	
+					playerMatchlist.favChampions(undefined, function(favChampions){
+						var champGamesList = new Array();
 
-					for(var x = 0; x < favChampions.length; x++){
-						champGamesList.push({ name : favChampions[x].name, games : favChampions[x].numGames});
-					}			
+						for(var x = 0; x < favChampions.length; x++){
+							champGamesList.push({ "name" : favChampions[x].name, "games" : favChampions[x].numGames});
+						}			
 
-					drawNumGames(champGamesList);
-				});			
+						drawNumGames(champGamesList);
+					});			
 
-				playerMatchlist.favRoles(function(favRoles){
-					drawNumRoles(favRoles);
-				});			
+					playerMatchlist.favRoles(function(favRoles){
+						drawNumRoles(favRoles);
+					});		
+					$('#body-wrapper').fadeIn();								
+					$('#mainContainer form input').val('');	
+				});				
 			};				
-			
-			$scope.playerInitStatus = function(){
-				return $scope.initialized;
-			};			
+								
 		});
 		</script>
 		<script type="text/javascript" src="matchlist.js"></script>
 		<script type="text/javascript" src="champion.js"></script>
-		<script type="text/javascript" src="d3graphics.js"></script>
+		<script type="text/javascript" src="d3-tip.js"></script>
+		<script type="text/javascript" src="d3graphics.js"></script>		
 	</body>
 </html>
