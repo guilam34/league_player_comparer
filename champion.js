@@ -1,4 +1,4 @@
-function champion(championEntry, json){		
+function Champion(championEntry, json){		
 	this.id;
 	this.name;
 	this.title;
@@ -18,6 +18,6 @@ function champion(championEntry, json){
 			}				
 		}						
 	};	
-	
+
 	this.init(championEntry,json);
 }

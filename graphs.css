@@ -14,7 +14,7 @@ button {
 	color: white;
 	font-weight: bold;
 	letter-spacing: 0.5px;
-	margin: 10px 0px;
+	margin: 20px 0px;
 	padding: 5px 10px;
 }
 
@@ -32,6 +32,13 @@ input {
 #body-wrapper {
     height: 100%;
     width: 100%;
+}
+
+.title {
+	width: 300px;
+	margin: 0 auto;
+	padding: 25px 0px 20px;
+	text-align: center;
 }
 
 .wrapper {
@@ -55,6 +62,12 @@ input {
     stroke: rgb(63, 63, 63);
 }
 
+.xaxis path{
+	fill: none;
+	stroke: rgb(63, 63 ,63);
+	stroke-width: 5;
+}
+
 .d3-tip {
   line-height: 1;
   font-family: Arial, Helvetica, sans-serif;
@@ -66,7 +79,6 @@ input {
   border-radius: 5px;
 }
 
-/* Creates a small triangle extender for the tooltip */
 .d3-tip:after {
   box-sizing: border-box;
   display: inline;  
@@ -79,7 +91,6 @@ input {
   text-align: center;
 }
 
-/* Style northward tooltips differently */
 .d3-tip.n:after {
   margin: -1px 0 0 0;
   top: 100%;

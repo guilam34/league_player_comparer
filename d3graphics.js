@@ -2,7 +2,7 @@ function drawNumGames(dataSet){
 	//initialize base variables		
 	var h = 500;
 	var w = 800;
-	var svg = d3.select("body").select("div").select("div")				
+	var svg = d3.select("body").select("div").select("div")
 				.append("svg")
 				.attr("width", w)
 				.attr("height", h);	
@@ -36,7 +36,7 @@ function drawNumGames(dataSet){
 function drawNumRoles(dataSet){
 	var h = 500;
 	var w = 800;
-	var svg = d3.select("body").select("div").select("div")				
+	var svg = d3.select("body").select("div").select("div")
 				.append("svg")
 				.attr("width", w)
 				.attr("height", h);	
@@ -69,8 +69,187 @@ function drawNumRoles(dataSet){
 	svg.call(tip);	
 }
 
-function linearGradient(svg, name, color1, color2){
-	//Graph gradient
+function drawKdaStats(dataSet){
+	//initialize base variables		
+	var h = 500;
+	var w = 800;
+	var svg = d3.select("body").select("div").select("div")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);	
+
+	var normalized_dataSet = new Array();
+	for(var i = 0; i < dataSet.length; i++){
+		normalized_dataSet.push({
+			"key" : dataSet[i].category,
+			"val" : dataSet[i].val
+		});
+	}
+
+	drawBarGraph(svg, normalized_dataSet, h, w, "purple");
+	linearGradient(svg, "purple", "#2E0854", "#72587F");
+
+	var tip = d3.tip()
+	  .offset([-10, 0])
+	  .attr("class", "d3-tip")
+	  .html(function(d) {
+	    return "Value: <span style='color:#cc66ff;font-size:15px'>" + d.val + "</span>";
+	  });
+
+	svg.selectAll("rect")
+		.on('mouseover', tip.show)
+		.on('mouseout', tip.hide);
+
+	svg.call(tip);
+}
+
+function drawMatchupStats(dataSet){
+	//initialize base variables		
+	console.log(dataSet);
+	var h = 500;
+	var w = 800;
+	var svg = d3.select("body").select("div").select("div")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);	
+
+	var normalized_dataSet = new Array();
+	for(var i = 0; i < dataSet.length; i++){
+		if(dataSet[i].val < 0){
+			normalized_dataSet.push({
+				"key" : dataSet[i].category,
+				"val" : dataSet[i].val * -1.0
+			});
+		}
+		else{
+			normalized_dataSet.push({
+				"key" : dataSet[i].category,
+				"val" : dataSet[i].val
+			});
+		}
+	}	
+
+	drawBarGraph(svg, normalized_dataSet, h, w, "blue");
+	linearGradient(svg, "blue", "#00688B", "#6996AD");	
+
+	var tip = d3.tip()
+	  .offset([-10, 0])
+	  .attr("class", "d3-tip")
+	  .html(function(d) {
+	    return "Difference: <span style='color:#cc66ff;font-size:15px'>" + d.val + "</span>";
+	  });
+
+	svg.selectAll("rect")
+		.on('mouseover', tip.show)
+		.on('mouseout', tip.hide);
+
+	svg.call(tip);
+}
+
+function drawCreepsStats(dataSet){
+	//initialize base variables		
+	var h = 500;
+	var w = 800;
+	var svg = d3.select("body").select("div").select("div")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);	
+
+	var normalized_dataSet = new Array();
+	for(var i = 0; i < dataSet.length; i++){
+		normalized_dataSet.push({
+			"key" : dataSet[i].category,
+			"val" : dataSet[i].val
+		});
+	}
+
+	drawBarGraph(svg, normalized_dataSet, h, w, "purple");
+	linearGradient(svg, "purple", "#2E0854", "#72587F");	
+	
+	var tip = d3.tip()
+	  .offset([-10, 0])
+	  .attr("class", "d3-tip")
+	  .html(function(d) {
+	    return "Creeps: <span style='color:#cc66ff;font-size:15px'>" + d.val + "</span>";
+	  });
+
+	svg.selectAll("rect")
+		.on('mouseover', tip.show)
+		.on('mouseout', tip.hide);
+
+	svg.call(tip);
+}
+
+function drawGoldStats(dataSet){
+	//initialize base variables		
+	var h = 500;
+	var w = 800;
+	var svg = d3.select("body").select("div").select("div")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);	
+
+	var normalized_dataSet = new Array();
+	for(var i = 0; i < dataSet.length; i++){
+		normalized_dataSet.push({
+			"key" : dataSet[i].category,
+			"val" : dataSet[i].val
+		});
+	}
+
+	drawBarGraph(svg, normalized_dataSet, h, w, "blue");
+	linearGradient(svg, "blue", "#00688B", "#6996AD");	
+
+	var tip = d3.tip()
+	  .offset([-10, 0])
+	  .attr("class", "d3-tip")
+	  .html(function(d) {
+	    return "Gold: <span style='color:#cc66ff;font-size:15px'>" + d.val + "</span>";
+	  });
+
+	svg.selectAll("rect")
+		.on('mouseover', tip.show)
+		.on('mouseout', tip.hide);
+
+	svg.call(tip);
+}
+
+function drawWardsStats(dataSet){
+	//initialize base variables		
+	var h = 500;
+	var w = 800;
+	var svg = d3.select("body").select("div").select("div")
+				.append("svg")
+				.attr("width", w)
+				.attr("height", h);	
+
+	var normalized_dataSet = new Array();
+	for(var i = 0; i < dataSet.length; i++){
+		normalized_dataSet.push({
+			"key" : dataSet[i].category,
+			"val" : dataSet[i].val
+		});
+	}
+
+	drawBarGraph(svg, normalized_dataSet, h, w, "purple");
+	linearGradient(svg, "purple", "#2E0854", "#72587F");
+
+	var tip = d3.tip()
+	  .offset([-10, 0])
+	  .attr("class", "d3-tip")
+	  .html(function(d) {
+	    return "Wards: <span style='color:#cc66ff;font-size:15px'>" + d.val + "</span>";
+	  });
+
+	svg.selectAll("rect")
+		.on('mouseover', tip.show)
+		.on('mouseout', tip.hide);
+
+	svg.call(tip);
+}
+
+//Linear gradient generator
+function linearGradient(svg, name, color1, color2){	
 	var barGradient = svg.append("svg:defs").append("svg:linearGradient")
 		.attr("id", name)		
 		.attr("x1", "0%")
@@ -87,9 +266,11 @@ function linearGradient(svg, name, color1, color2){
 
 	barGradient.append("svg:stop")
 				.attr("offset", "100%")
-				.attr("stop-color", color2);	
+				.attr("stop-color", color2)
+				.attr("stop-opacity", 0.95);	
 }
 
+//Template bar graph drawing function
 function drawBarGraph(svg, dataSet, height, width, color){
 	var svg_h = height;
 	var svg_w = width;
@@ -115,19 +296,16 @@ function drawBarGraph(svg, dataSet, height, width, color){
 
 	var xAxis = d3.svg.axis()
 					.scale(xScale)
-					.orient("bottom");
+					.orient("bottom")	
+					.tickSize(0)
+					.tickPadding(10);
 
 	var yAxis = d3.svg.axis()
 					.scale(yScale)
 				    .orient("left")
 				    .innerTickSize(-svg_w)
 				    .outerTickSize(0)
-				    .tickPadding(50);
-
-	svg.append("g")
-		.attr("class", "axis")
-		.attr("transform", "translate(0, " + graph_h + ")")
-		.call(xAxis);		
+				    .tickPadding(50);	
 
 	svg.append("g")
 		.attr("class", "axis")		
@@ -157,4 +335,9 @@ function drawBarGraph(svg, dataSet, height, width, color){
 		.attr("y", function(d){
 			return yScale(d.val);
 		});		
+
+	svg.append("g")
+		.attr("class", "axis xaxis")
+		.attr("transform", "translate(0, " + graph_h + ")")
+		.call(xAxis);		
 }

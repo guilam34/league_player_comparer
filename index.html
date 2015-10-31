@@ -9,6 +9,7 @@
 	</head>
 	<body>
 		<div id="body-wrapper">
+			<h1 class="title">League.Me</h1>
 			<div class="wrapper">
 				<div ng-app="mainApp" ng-controller="mainAppCtrl" id="mainContainer">
 					<form novalidate>
@@ -34,8 +35,7 @@
 
 				oReq.addEventListener("load", function(){
 					playerMatchlistJSON = JSON.parse(this.response);
-					playerMatchlist = new matchlist(playerMatchlistJSON);	
-					$scope.generateGraphs();							
+					playerMatchlist = new Matchlist(playerMatchlistJSON, $scope.playerId, $scope.generateGraphs);	
 				});
 
 				oReq.open("GET", playerMatchlistEndpoint);
@@ -57,30 +57,34 @@
 			};	
 
 			$scope.generateGraphs = function(){		
-				$('#body-wrapper').fadeOut(500, function(){
+				$('#body-wrapper').fadeOut(500, function(){					
 					d3.selectAll("svg").remove();	
-					playerMatchlist.favChampions(undefined, function(favChampions){
+					playerMatchlist.favChampions(function(favChampions){
 						var champGamesList = new Array();
 
 						for(var x = 0; x < favChampions.length; x++){
-							champGamesList.push({ "name" : favChampions[x].name, "games" : favChampions[x].numGames});
+							champGamesList.push({ "name" : favChampions[x].name, "games" : favChampions[x].numGames})
 						}			
 
-						drawNumGames(champGamesList);
-					});			
+						drawNumGames(champGamesList);						
+						playerMatchlist.favRoles(drawNumRoles);						
+						playerMatchlist.kdaStats(drawKdaStats);
+						playerMatchlist.matchupStats(drawMatchupStats);
+						playerMatchlist.creepsStats(drawCreepsStats);
+						playerMatchlist.goldStats(drawGoldStats);
+						playerMatchlist.wardsStats(drawWardsStats);
 
-					playerMatchlist.favRoles(function(favRoles){
-						drawNumRoles(favRoles);
-					});		
-					$('#body-wrapper').fadeIn();								
-					$('#mainContainer form input').val('');	
+						$('#body-wrapper').fadeIn();								
+						$('#mainContainer form input').val('');	
+					});													
 				});				
 			};				
 								
 		});
-		</script>
-		<script type="text/javascript" src="matchlist.js"></script>
+		</script>		
 		<script type="text/javascript" src="champion.js"></script>
+		<script type="text/javascript" src="player.js"></script>
+		<script type="text/javascript" src="matchlist.js"></script>
 		<script type="text/javascript" src="d3-tip.js"></script>
 		<script type="text/javascript" src="d3graphics.js"></script>		
 	</body>
